@@ -5,6 +5,7 @@ import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +24,15 @@ public class SimpleProducer {
 
 		KafkaProducer<String, String> producer = new KafkaProducer<>(configs);
 		String messageValue = "testMessage";
-		ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, "pangyo", "23");
-		producer.send(record);
-		logger.info("{}", record);
-		producer.flush();
-		producer.close();
+		ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME,"Pangyo", messageValue);
+		try{
+			RecordMetadata metadata = producer.send(record).get();
+		} catch (Exception e ){
+			logger.error(e.getMessage(), e);
+		} finally {
+			producer.flush();
+			producer.close();
+		}
 	}
 
 }
