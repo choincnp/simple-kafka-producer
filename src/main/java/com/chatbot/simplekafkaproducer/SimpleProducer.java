@@ -26,7 +26,7 @@ public class SimpleProducer {
 		String messageValue = "testMessage";
 		ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME,"Pangyo", messageValue);
 		try{
-			RecordMetadata metadata = producer.send(record).get();
+			producer.send(record, new ProducerCallBack());
 		} catch (Exception e ){
 			logger.error(e.getMessage(), e);
 		} finally {
